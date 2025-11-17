@@ -158,6 +158,7 @@ dependencies = [
     "sqlparse>=0.5.0",      # SQL syntax validation
     "sqlfluff>=3.4.0",      # SQL linting
     "PyYAML>=6.0",          # YAML processing
+    "yamllint>=1.37.1",     # YAML linting
     "requests>=2.31.0",     # HTTP requests for checks
 ]
 

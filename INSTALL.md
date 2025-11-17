@@ -24,12 +24,13 @@ make setup
 pip install -e .
 
 # Herramientas de desarrollo
-pip install pre-commit ruff mypy bandit safety pip-audit pytest pytest-cov
+pip install pre-commit ruff mypy bandit safety pip-audit pytest pytest-cov yamllint
 
 # Verificar instalación
-ruff --version    # 0.14.5+
-mypy --version    # 1.18.2+
-bandit --version  # 1.7.10+
+ruff --version      # 0.14.5+
+mypy --version      # 1.18.2+
+bandit --version    # 1.7.10+
+yamllint --version  # 1.37.1+
 ```
 
 ### 🦀 Rust Stack

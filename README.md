@@ -29,13 +29,14 @@ Stack de pre-commit hooks universal y modular para proyectos multi-lenguaje, opt
 |-------|--------------|-----------------|
 | **Python** | Ruff, Mypy, Bandit, Safety | Linting ultra-rápido, type checking 40% más rápido (v1.18), seguridad |
 | **Rust** | Clippy, Fmt, Audit, Coverage | Linting, formato, security audit, coverage con llvm-cov, detección de deps no usadas |
-| **Flutter/Dart** | Dart Analyze, **DCM** | Análisis estándar + métricas premium (complejidad, código no usado) |
+| **Flutter/Dart** | Flutter Analyze (auto-detect), **DCM** | Auto-detección Flutter vs Dart + métricas premium (complejidad, código no usado) |
 | **TypeScript/JS** | **Biome v2** | Type-aware linting sin TypeScript compiler, 373 reglas, soporte Vue/Svelte/Astro |
 | **PostgreSQL/plSQL** | SQLFluff, Squawk | Linting SQL, prevención de downtime en migraciones, detección SQL injection |
 | **Odoo 19** | OCA tools, Pylint-Odoo | Validación de módulos, XML, manifests, OWL components |
 | **Shell** | ShellCheck, shfmt | Linting y formato de scripts bash |
 | **HTML/CSS** | Stylelint, HTMLHint | Validación y formato |
 | **Docker** | Hadolint, **Trivy** | Linting Dockerfile + security scanning |
+| **YAML** | yamllint v1.37.1 | Linting comprehensivo (más que check-yaml básico) |
 | **General** | Gitleaks, detect-secrets | Detección de secretos multi-capa |
 
 ### 🆕 Novedades de esta versión
@@ -43,7 +44,9 @@ Stack de pre-commit hooks universal y modular para proyectos multi-lenguaje, opt
 - **Biome v2.3.5**: Type-aware linting para JS/TS sin compilador TypeScript
 - **Mypy v1.18.2**: 40% más rápido en type checking
 - **DCM para Flutter**: Detección de código no usado, métricas de complejidad
+- **Flutter analyze auto-detect**: Detecta automáticamente proyectos Flutter vs Dart puro
 - **Stack PostgreSQL completo**: Crítico para Odoo 19
+- **yamllint v1.37.1**: Linting YAML comprehensivo (más allá de check-yaml básico)
 - **Trivy**: Security scanning de Docker y filesystems
 - **Rust enhanced**: Coverage con llvm-cov, detección de deps no usadas
 

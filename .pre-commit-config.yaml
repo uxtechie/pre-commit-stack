@@ -29,6 +29,13 @@ repos:
       - id: check-toml
       - id: check-xml
 
+  # YAML linting with yamllint (more comprehensive than check-yaml)
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args: ['-d', 'relaxed']
+
       # Git checks
       - id: check-added-large-files
         args: ['--maxkb=1000']
@@ -402,14 +409,14 @@ repos:
         types: [dart]
         args: ['--set-exit-if-changed']
 
-      # Standard Dart analyzer
-      - id: dart-analyze
-        name: dart analyze
-        entry: dart analyze
+      # Flutter/Dart analyzer
+      # Note: Auto-detects Flutter projects (uses 'flutter analyze') vs pure Dart (uses 'dart analyze')
+      - id: flutter-analyze
+        name: flutter/dart analyze
+        entry: bash -c 'if [ -f "pubspec.yaml" ] && grep -q "flutter:" pubspec.yaml; then flutter analyze --fatal-infos --fatal-warnings; else dart analyze --fatal-infos --fatal-warnings; fi'
         language: system
         types: [dart]
         pass_filenames: false
-        args: ['--fatal-infos', '--fatal-warnings']
 
       # DCM (Dart Code Metrics) - Premium code quality
       - id: dcm-analyze

@@ -1,0 +1,65 @@
+# yamllint configuration
+# https://yamllint.readthedocs.io/en/stable/configuration.html
+
+extends: relaxed
+
+rules:
+  # Line length (relaxed allows 80+)
+  line-length:
+    max: 120
+    level: warning
+
+  # Indentation
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
+
+  # Trailing spaces
+  trailing-spaces: enable
+
+  # Empty lines
+  empty-lines:
+    max: 2
+
+  # Key ordering (disabled for flexibility)
+  key-ordering: disable
+
+  # Comments
+  comments:
+    min-spaces-from-content: 1
+
+  # Document start/end
+  document-start: disable
+  document-end: disable
+
+  # Brackets
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+
+  # Braces
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+
+  # Truthy values (allow yes/no, on/off, etc.)
+  truthy:
+    allowed-values: ['true', 'false', 'yes', 'no', 'on', 'off']
+    check-keys: false
+
+  # New line at end of file
+  new-line-at-end-of-file: enable
+
+  # No duplicate keys
+  key-duplicates: enable
+
+# Ignore patterns
+ignore: |
+  .github/
+  node_modules/
+  .venv/
+  venv/
+  build/
+  dist/
+  *.min.yml
