@@ -26,7 +26,7 @@ repos:
       - id: check-yaml
         args: ['--unsafe']
       - id: check-json
-      - id: check-toml
+      - id: check-toml  # Basic TOML syntax check
       - id: check-xml
 
   # YAML linting with yamllint (more comprehensive than check-yaml)
@@ -35,6 +35,13 @@ repos:
     hooks:
       - id: yamllint
         args: ['-d', 'relaxed']
+
+  # TOML linting and formatting with Taplo (more comprehensive than check-toml)
+  - repo: https://github.com/ComPWA/taplo-pre-commit
+    rev: v0.9.3
+    hooks:
+      - id: taplo-format
+      - id: taplo-lint
 
       # Git checks
       - id: check-added-large-files
@@ -572,10 +579,10 @@ repos:
   # ============================================
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.43.0
+    rev: v0.45.0
     hooks:
       - id: markdownlint
-        args: ['--fix']
+        args: ['--fix', '--config', '.markdownlint.json']
 
   # ============================================
   # 13. SPELL CHECKING

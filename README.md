@@ -37,6 +37,8 @@ Stack de pre-commit hooks universal y modular para proyectos multi-lenguaje, opt
 | **HTML/CSS** | Stylelint, HTMLHint | Validación y formato |
 | **Docker** | Hadolint, **Trivy** | Linting Dockerfile + security scanning |
 | **YAML** | yamllint v1.37.1 | Linting comprehensivo (más que check-yaml básico) |
+| **TOML** | **Taplo v0.9.3** | Linting y formatting para pyproject.toml, Cargo.toml, etc. |
+| **Markdown** | markdownlint v0.45.0 | Linting y auto-fix con reglas personalizables |
 | **General** | Gitleaks, detect-secrets | Detección de secretos multi-capa |
 
 ### 🆕 Novedades de esta versión
@@ -47,6 +49,8 @@ Stack de pre-commit hooks universal y modular para proyectos multi-lenguaje, opt
 - **Flutter analyze auto-detect**: Detecta automáticamente proyectos Flutter vs Dart puro
 - **Stack PostgreSQL completo**: Crítico para Odoo 19
 - **yamllint v1.37.1**: Linting YAML comprehensivo (más allá de check-yaml básico)
+- **Taplo v0.9.3**: Linting y formatting TOML (pyproject.toml, Cargo.toml, etc.)
+- **markdownlint v0.45.0**: Actualizado con configuración personalizada
 - **Trivy**: Security scanning de Docker y filesystems
 - **Rust enhanced**: Coverage con llvm-cov, detección de deps no usadas
 
@@ -243,6 +247,41 @@ SQLFluff configurado para PostgreSQL:
 [sqlfluff]
 dialect = postgres
 max_line_length = 120
+```
+
+### YAML (.yamllint)
+
+Yamllint con configuración relajada:
+
+```yaml
+extends: relaxed
+rules:
+  line-length:
+    max: 120
+```
+
+### TOML (.taplo.toml)
+
+Taplo para formateo y linting:
+
+```toml
+[formatting]
+array_trailing_comma = true
+column_width = 100
+trailing_newline = true
+```
+
+### Markdown (.markdownlint.json)
+
+Markdownlint personalizado:
+
+```json
+{
+  "line-length": { "line_length": 120 },
+  "no-inline-html": {
+    "allowed_elements": ["details", "summary", "br"]
+  }
+}
 ```
 
 ### Rust (deny.toml)

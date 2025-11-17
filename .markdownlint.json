@@ -1,0 +1,59 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json",
+  "default": true,
+  "line-length": {
+    "line_length": 120,
+    "code_blocks": false,
+    "tables": false
+  },
+  "no-duplicate-header": {
+    "siblings_only": true
+  },
+  "no-inline-html": {
+    "allowed_elements": [
+      "details",
+      "summary",
+      "br",
+      "sub",
+      "sup",
+      "kbd",
+      "img"
+    ]
+  },
+  "no-bare-urls": false,
+  "blanks-around-fences": true,
+  "blanks-around-headings": {
+    "lines_above": 1,
+    "lines_below": 1
+  },
+  "heading-style": {
+    "style": "atx"
+  },
+  "ul-style": {
+    "style": "dash"
+  },
+  "list-indent": true,
+  "list-marker-space": true,
+  "no-hard-tabs": true,
+  "no-reversed-links": true,
+  "no-multiple-blanks": {
+    "maximum": 2
+  },
+  "no-missing-space-atx": true,
+  "no-missing-space-closed-atx": true,
+  "no-space-in-emphasis": true,
+  "no-space-in-code": true,
+  "no-space-in-links": true,
+  "fenced-code-language": true,
+  "first-line-heading": false,
+  "no-emphasis-as-heading": true,
+  "code-block-style": {
+    "style": "fenced"
+  },
+  "emphasis-style": {
+    "style": "asterisk"
+  },
+  "strong-style": {
+    "style": "asterisk"
+  }
+}

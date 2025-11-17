@@ -1,0 +1,59 @@
+# Taplo Configuration
+# https://taplo.tamasfe.dev/configuration/
+
+# Include/exclude patterns
+include = ["**/*.toml"]
+exclude = []
+
+# Formatting options
+[formatting]
+# Align entries vertically
+align_entries = false
+
+# Align comments after entries
+align_comments = true
+
+# Maximum number of blank lines
+allowed_blank_lines = 1
+
+# Array formatting
+array_trailing_comma = true
+array_auto_expand = true
+array_auto_collapse = true
+
+# Compact arrays (single line if possible)
+compact_arrays = true
+compact_inline_tables = false
+
+# Column width for wrapping
+column_width = 100
+
+# Indent tables
+indent_tables = false
+
+# Indent entries under headers
+indent_entries = false
+
+# Inline table formatting
+inline_table_expand = true
+
+# Reorder keys alphabetically
+reorder_keys = false
+
+# Trailing newline
+trailing_newline = true
+
+# CRLF line endings (false = LF)
+crlf = false
+
+# Formatting rules for specific files
+[[rule]]
+include = ["pyproject.toml"]
+[rule.formatting]
+reorder_keys = false
+column_width = 120
+
+[[rule]]
+include = ["Cargo.toml"]
+[rule.formatting]
+reorder_keys = false
