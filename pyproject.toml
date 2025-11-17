@@ -144,3 +144,28 @@ omit = [
 fail_under = 80
 precision = 2
 show_missing = true
+
+# ============================================
+# Project dependencies for pre-commit scripts
+# ============================================
+
+[project]
+name = "pre-commit-stack"
+version = "0.1.0"
+description = "Universal pre-commit stack for multiple languages"
+requires-python = ">=3.11"
+dependencies = [
+    "sqlparse>=0.5.0",      # SQL syntax validation
+    "sqlfluff>=3.4.0",      # SQL linting
+    "PyYAML>=6.0",          # YAML processing
+    "requests>=2.31.0",     # HTTP requests for checks
+]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit>=4.4.0",
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.14.5",
+    "mypy>=1.18.2",
+]

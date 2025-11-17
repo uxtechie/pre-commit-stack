@@ -1,0 +1,115 @@
+# DCM (Dart Code Metrics) Configuration
+# https://dcm.dev/docs/configuration/
+
+extends:
+  - package:dcm/presets/recommended.yaml
+  - package:dcm/presets/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+    - "**/generated/**"
+    - "**/build/**"
+    - "**/.dart_tool/**"
+
+# Code metrics thresholds
+metrics:
+  cyclomatic-complexity: 20
+  halstead-volume: 150
+  lines-of-code: 100
+  maintainability-index: 40
+  maximum-nesting-level: 5
+  number-of-methods: 10
+  number-of-parameters: 4
+  source-lines-of-code: 50
+  technical-debt:
+    threshold: 16
+    todo-cost: 4
+    ignore-cost: 8
+    deprecated-annotations-cost: 2
+    file-nullsafety-migration-cost: 2
+    as-dynamic-cost: 4
+
+# Anti-patterns detection
+anti-patterns:
+  - long-method
+  - long-parameter-list
+
+# Additional rules
+rules:
+  # Common
+  - avoid-banned-imports
+  - avoid-collection-methods-with-unrelated-types
+  - avoid-duplicate-exports
+  - avoid-dynamic
+  - avoid-global-state
+  - avoid-ignoring-return-values
+  - avoid-late-keyword
+  - avoid-missing-enum-constant-in-map
+  - avoid-nested-conditional-expressions
+  - avoid-non-ascii-symbols
+  - avoid-non-null-assertion
+  - avoid-passing-async-when-sync-expected
+  - avoid-redundant-async
+  - avoid-throw-in-catch-block
+  - avoid-top-level-members-in-tests
+  - avoid-unnecessary-conditionals
+  - avoid-unnecessary-type-assertions
+  - avoid-unnecessary-type-casts
+  - avoid-unrelated-type-assertions
+  - avoid-unused-parameters
+  - ban-name
+  - double-literal-format
+  - newline-before-return
+  - no-boolean-literal-compare
+  - no-empty-block
+  - no-equal-then-else
+  - no-magic-number
+  - no-object-declaration
+  - prefer-async-await
+  - prefer-commenting-analyzer-ignores
+  - prefer-conditional-expressions
+  - prefer-correct-identifier-length:
+      exceptions: [ 'id', 'db', 'x', 'y', 'z' ]
+      max-identifier-length: 40
+      min-identifier-length: 2
+  - prefer-correct-type-name
+  - prefer-enums-by-name
+  - prefer-first
+  - prefer-immediate-return
+  - prefer-iterable-of
+  - prefer-last
+  - prefer-match-file-name
+  - prefer-moving-to-variable
+  - prefer-static-class
+
+  # Flutter specific
+  - always-remove-listener
+  - avoid-border-all
+  - avoid-returning-widgets
+  - avoid-shrink-wrap-in-lists
+  - avoid-unnecessary-setstate
+  - avoid-use-expanded-as-spacer
+  - avoid-wrapping-in-padding
+  - check-for-equals-in-render-object-setters
+  - consistent-update-render-object
+  - prefer-const-border-radius
+  - prefer-correct-edge-insets-constructor
+  - prefer-extracting-callbacks
+  - prefer-single-widget-per-file:
+      ignore-private-widgets: true
+  - prefer-using-list-view
+  - use-setstate-synchronously
+
+# Unused code detection
+unused-code:
+  enabled: true
+
+# Unused files detection
+unused-files:
+  enabled: true
+  exclude:
+    - "**/*.g.dart"
+    - "**/generated/**"

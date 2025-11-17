@@ -1,0 +1,68 @@
+# SQLFluff Configuration for PostgreSQL/Odoo
+# https://docs.sqlfluff.com/en/stable/configuration.html
+
+[sqlfluff]
+# PostgreSQL dialect
+dialect = postgres
+templater = raw
+sql_file_exts = .sql,.psql
+
+# Exclude paths
+exclude_rules = None
+ignore_templated_areas = True
+
+# Rules
+max_line_length = 120
+indent_unit = space
+tab_space_size = 2
+
+[sqlfluff:indentation]
+indented_joins = False
+indented_using_on = True
+template_blocks_indent = True
+
+[sqlfluff:rules]
+# Capitalisation
+capitalisation_policy = upper
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:L010]
+# Keywords should be upper case
+capitalisation_policy = upper
+
+[sqlfluff:rules:L014]
+# Unquoted identifiers should be lower case
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:L030]
+# Function names should be upper case
+capitalisation_policy = upper
+
+[sqlfluff:rules:L034]
+# Disable rule about select * (common in Odoo)
+select_clause_trailing_comma = forbid
+
+[sqlfluff:rules:L036]
+# Select targets should be on new lines
+wildcard_policy = single
+
+[sqlfluff:rules:L042]
+# Join clauses should not contain subqueries (too strict for complex queries)
+# Disabled for Odoo compatibility
+
+[sqlfluff:rules:L052]
+# Semi-colon formatting
+multiline_newline = False
+require_final_semicolon = True
+
+[sqlfluff:rules:L054]
+# GROUP BY/ORDER BY column references
+group_by_and_order_by_style = consistent
+
+[sqlfluff:rules:L063]
+# Data types should be consistent
+extended_capitalisation_policy = upper
+
+[sqlfluff:rules:L065]
+# Set operators should be surrounded by newlines
+set_op_indent = False

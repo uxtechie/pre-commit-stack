@@ -52,13 +52,22 @@ repos:
         files: ^(\.gitignore|requirements.*\.txt)$
 
   # ============================================
-  # 02. SECURITY - Secrets & Vulnerabilities
+  # 02. SECURITY - Secrets & Vulnerabilities (Multi-layer)
   # ============================================
 
+  # Layer 1: Gitleaks (fast, comprehensive)
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.29.0
     hooks:
       - id: gitleaks
+
+  # Layer 2: detect-secrets (complementary patterns)
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package-lock\.json
 
   # ============================================
   # 03. COMMIT MESSAGE VALIDATION
@@ -85,9 +94,9 @@ repos:
       # Formatting
       - id: ruff-format
 
-  # Type checking
+  # Type checking - Mypy with 40% performance boost (v1.18+)
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.13.0
+    rev: v1.18.2
     hooks:
       - id: mypy
         additional_dependencies:
@@ -95,6 +104,7 @@ repos:
           - types-PyYAML
         args:
           - --ignore-missing-imports
+          - --python-version=3.11
 
   # Security - Bandit
   - repo: https://github.com/PyCQA/bandit
@@ -264,18 +274,21 @@ repos:
         pass_filenames: true
 
   # ============================================
-  # 06. RUST
+  # 06. RUST - Enhanced Security & Coverage
   # ============================================
 
   - repo: local
     hooks:
+      # Code formatting
       - id: cargo-fmt
         name: cargo fmt
         entry: cargo fmt
         language: system
         types: [rust]
         pass_filenames: false
+        args: ['--all', '--', '--check']
 
+      # Linting with Clippy
       - id: cargo-clippy
         name: cargo clippy
         entry: cargo clippy
@@ -284,6 +297,16 @@ repos:
         pass_filenames: false
         args: ['--all-targets', '--all-features', '--', '-D', 'warnings']
 
+      # Check for compilation errors (faster than full build)
+      - id: cargo-check
+        name: cargo check
+        entry: cargo check
+        language: system
+        types: [rust]
+        pass_filenames: false
+        args: ['--all-targets', '--all-features']
+
+      # Unit tests
       - id: cargo-test
         name: cargo test
         entry: cargo test
@@ -292,6 +315,17 @@ repos:
         pass_filenames: false
         stages: [pre-push]
 
+      # Code coverage (requires cargo-llvm-cov)
+      - id: cargo-llvm-cov
+        name: cargo llvm-cov (coverage)
+        entry: cargo llvm-cov
+        language: system
+        types: [rust]
+        pass_filenames: false
+        args: ['--fail-under-lines', '70', '--ignore-filename-regex', 'tests?/']
+        stages: [pre-push]
+
+      # Security audit
       - id: cargo-audit
         name: cargo audit
         entry: cargo audit
@@ -299,22 +333,43 @@ repos:
         pass_filenames: false
         files: Cargo\.(toml|lock)$
 
+      # License and dependency policy checking
       - id: cargo-deny
         name: cargo deny
         entry: cargo deny check
         language: system
         pass_filenames: false
         files: Cargo\.(toml|lock)$
+        args: ['--all-features']
+
+      # Check for outdated dependencies
+      - id: cargo-outdated
+        name: cargo outdated
+        entry: cargo outdated
+        language: system
+        pass_filenames: false
+        files: Cargo\.(toml|lock)$
+        args: ['--exit-code', '1', '--depth', '1']
+
+      # Unused dependencies detection
+      - id: cargo-udeps
+        name: cargo udeps (unused deps)
+        entry: cargo
+        language: system
+        types: [rust]
+        pass_filenames: false
+        args: ['+nightly', 'udeps', '--all-targets']
+        stages: [pre-push]
 
   # ============================================
-  # 07. JAVASCRIPT/TYPESCRIPT - Biome + OWL
+  # 07. JAVASCRIPT/TYPESCRIPT - Biome v2 + OWL
   # ============================================
 
   - repo: https://github.com/biomejs/pre-commit
-    rev: v0.9.3
+    rev: v0.6.1  # Latest pre-commit hook version (Dec 2025)
     hooks:
       - id: biome-check
-        additional_dependencies: ['@biomejs/biome@1.9.3']
+        additional_dependencies: ['@biomejs/biome@2.3.5']  # Biome v2 with type-aware linting
 
   # TypeScript type checking
   - repo: local
@@ -334,11 +389,12 @@ repos:
         files: package(-lock)?\.json$
 
   # ============================================
-  # 07. FLUTTER/DART
+  # 07. FLUTTER/DART - Enhanced with DCM
   # ============================================
 
   - repo: local
     hooks:
+      # Code formatting
       - id: dart-format
         name: dart format
         entry: dart format
@@ -346,6 +402,7 @@ repos:
         types: [dart]
         args: ['--set-exit-if-changed']
 
+      # Standard Dart analyzer
       - id: dart-analyze
         name: dart analyze
         entry: dart analyze
@@ -354,6 +411,32 @@ repos:
         pass_filenames: false
         args: ['--fatal-infos', '--fatal-warnings']
 
+      # DCM (Dart Code Metrics) - Premium code quality
+      - id: dcm-analyze
+        name: dcm analyze (code quality & metrics)
+        entry: dcm analyze
+        language: system
+        types: [dart]
+        pass_filenames: false
+        args: ['--fatal-style', '--fatal-performance', '--fatal-warnings']
+
+      # DCM - Check for unused files
+      - id: dcm-check-unused-files
+        name: dcm check unused files
+        entry: dcm check-unused-files
+        language: system
+        pass_filenames: false
+        files: \.dart$
+
+      # DCM - Check for unused code
+      - id: dcm-check-unused-code
+        name: dcm check unused code
+        entry: dcm check-unused-code
+        language: system
+        types: [dart]
+        pass_filenames: false
+
+      # Flutter tests
       - id: flutter-test
         name: flutter test
         entry: flutter test
@@ -362,12 +445,55 @@ repos:
         pass_filenames: false
         stages: [pre-push]
 
+      # Check for outdated dependencies
       - id: dart-pub-outdated
         name: dart pub outdated
         entry: dart pub outdated
         language: system
         pass_filenames: false
         files: pubspec\.(yaml|lock)$
+
+  # ============================================
+  # 08. POSTGRESQL/plSQL - Database Quality
+  # ============================================
+
+  # SQLFluff - Comprehensive SQL linter with PostgreSQL dialect
+  - repo: https://github.com/sqlfluff/sqlfluff
+    rev: 3.4.0
+    hooks:
+      - id: sqlfluff-lint
+        args: ['--dialect', 'postgres', '--exclude-rules', 'L034']
+        files: \.sql$
+      - id: sqlfluff-fix
+        args: ['--dialect', 'postgres', '--exclude-rules', 'L034']
+        files: \.sql$
+
+  # Squawk - PostgreSQL migration linter (prevents downtime)
+  - repo: https://github.com/sbdchd/squawk
+    rev: v1.1.0
+    hooks:
+      - id: squawk
+        files: (migrations?|sql)/.*\.sql$
+        args: ['--assume-in-transaction']
+
+  # Local PL/pgSQL validation hooks
+  - repo: local
+    hooks:
+      # Basic SQL syntax validation
+      - id: sql-syntax-check
+        name: SQL syntax check
+        entry: python scripts/check_sql_syntax.py
+        language: system
+        files: \.sql$
+        pass_filenames: true
+
+      # Odoo-specific SQL checks (for Odoo modules)
+      - id: odoo-sql-injection-check
+        name: Check SQL injection vulnerabilities
+        entry: python scripts/check_sql_injection.py
+        language: system
+        files: \.py$
+        pass_filenames: true
 
   # ============================================
   # 09. SHELL SCRIPTS
@@ -390,12 +516,12 @@ repos:
   # ============================================
 
   - repo: https://github.com/thibaudcolas/pre-commit-stylelint
-    rev: v16.10.0
+    rev: v16.25.0
     hooks:
       - id: stylelint
         files: \.(css|scss|sass|less)$
         additional_dependencies:
-          - stylelint@16.10.0
+          - stylelint@16.25.0
           - stylelint-config-standard@36.0.1
         args: ['--fix']
 
@@ -405,14 +531,34 @@ repos:
       - id: validate-html
 
   # ============================================
-  # 11. DOCKER
+  # 11. DOCKER - Linting & Security
   # ============================================
 
+  # Dockerfile linting
   - repo: https://github.com/hadolint/hadolint
     rev: v2.12.1-beta
     hooks:
       - id: hadolint-docker
         args: ['--ignore', 'DL3008', '--ignore', 'DL3018']
+
+  # Docker security scanning with Trivy
+  - repo: local
+    hooks:
+      - id: trivy-config
+        name: trivy config scan
+        entry: trivy config
+        language: system
+        files: (Dockerfile|docker-compose\.ya?ml)$
+        pass_filenames: true
+        args: ['--severity', 'HIGH,CRITICAL', '--exit-code', '1']
+
+      - id: trivy-fs
+        name: trivy filesystem scan
+        entry: trivy fs
+        language: system
+        pass_filenames: false
+        args: ['--severity', 'CRITICAL', '--exit-code', '1', '.']
+        stages: [pre-push]
 
   # ============================================
   # 12. MARKDOWN
