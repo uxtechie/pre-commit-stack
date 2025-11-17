@@ -1,62 +1,62 @@
-# 🚀 Pre-commit Stack Universal
+# 🚀 Universal Pre-commit Stack
 
-Stack de pre-commit hooks universal y modular para proyectos multi-lenguaje, optimizado para desarrollo profesional con las últimas herramientas open source (Noviembre 2025).
+Universal and modular pre-commit hooks stack for multi-language projects, optimized for professional development with the latest open source tools (November 2025).
 
-## 📋 Tabla de Contenidos
+## 📋 Table of Contents
 
-- [Características](#-características)
-- [Stacks Soportados](#-stacks-soportados)
-- [Instalación](#-instalación)
-- [Uso](#-uso)
-- [Configuración por Stack](#-configuración-por-stack)
-- [Comandos Make](#-comandos-make)
-- [Requisitos](#-requisitos)
+- [Features](#-features)
+- [Supported Stacks](#-supported-stacks)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Configuration by Stack](#-configuration-by-stack)
+- [Make Commands](#-make-commands)
+- [Requirements](#-requirements)
 - [Roadmap](#-roadmap)
 
-## ✨ Características
+## ✨ Features
 
-- ✅ **Multi-lenguaje**: Soporte para 8+ lenguajes y frameworks
-- ⚡ **Alto rendimiento**: Herramientas modernas escritas en Rust (Ruff, Biome)
-- 🛡️ **Seguridad multi-capa**: Detección de secretos, vulnerabilidades y SQL injection
-- 🎯 **Modular**: Activa solo los stacks que necesites
-- 🔄 **Siempre actualizado**: Versiones más recientes (Nov 2025)
-- 📊 **Métricas de código**: Coverage, complejidad, código no usado
-- 🐘 **Optimizado para Odoo 19**: Validaciones específicas para Odoo
+- ✅ **Multi-language**: Support for 8+ languages and frameworks
+- ⚡ **High performance**: Modern tools written in Rust (Ruff, Biome)
+- 🛡️ **Multi-layer security**: Secrets detection, vulnerabilities, and SQL injection
+- 🎯 **Modular**: Activate only the stacks you need
+- 🔄 **Always up-to-date**: Latest versions (Nov 2025)
+- 📊 **Code metrics**: Coverage, complexity, unused code detection
+- 🐘 **Optimized for Odoo 19**: Specific validations for Odoo
 
-## 🎨 Stacks Soportados
+## 🎨 Supported Stacks
 
-| Stack | Herramientas | Características |
-|-------|--------------|-----------------|
-| **Python** | Ruff, Mypy, Bandit, Safety | Linting ultra-rápido, type checking 40% más rápido (v1.18), seguridad |
-| **Rust** | Clippy, Fmt, Audit, Coverage | Linting, formato, security audit, coverage con llvm-cov, detección de deps no usadas |
-| **Flutter/Dart** | Flutter Analyze (auto-detect), **DCM** | Auto-detección Flutter vs Dart + métricas premium (complejidad, código no usado) |
-| **TypeScript/JS** | **Biome v2** | Type-aware linting sin TypeScript compiler, 373 reglas, soporte Vue/Svelte/Astro |
-| **PostgreSQL/plSQL** | SQLFluff, Squawk | Linting SQL, prevención de downtime en migraciones, detección SQL injection |
-| **Odoo 19** | OCA tools, Pylint-Odoo | Validación de módulos, XML, manifests, OWL components |
-| **Shell** | ShellCheck, shfmt | Linting y formato de scripts bash |
-| **HTML/CSS** | Stylelint, HTMLHint | Validación y formato |
-| **Docker** | Hadolint, **Trivy** | Linting Dockerfile + security scanning |
-| **YAML** | yamllint v1.37.1 | Linting comprehensivo (más que check-yaml básico) |
-| **TOML** | **Taplo v0.9.3** | Linting y formatting para pyproject.toml, Cargo.toml, etc. |
-| **Markdown** | markdownlint v0.45.0 | Linting y auto-fix con reglas personalizables |
-| **General** | Gitleaks, detect-secrets | Detección de secretos multi-capa |
+| Stack | Tools | Features |
+|-------|-------|----------|
+| **Python** | Ruff, Mypy, Bandit, Safety | Ultra-fast linting, 40% faster type checking (v1.18), security |
+| **Rust** | Clippy, Fmt, Audit, Coverage | Linting, formatting, security audit, coverage with llvm-cov, unused deps detection |
+| **Flutter/Dart** | Flutter Analyze (auto-detect), **DCM** | Auto-detection Flutter vs Dart + premium metrics (complexity, unused code) |
+| **TypeScript/JS** | **Biome v2** | Type-aware linting without TypeScript compiler, 373 rules, Vue/Svelte/Astro support |
+| **PostgreSQL/plSQL** | SQLFluff, Squawk | SQL linting, migration downtime prevention, SQL injection detection |
+| **Odoo 19** | OCA tools, Pylint-Odoo | Module validation, XML, manifests, OWL components |
+| **Shell** | ShellCheck, shfmt | Linting and formatting for bash scripts |
+| **HTML/CSS** | Stylelint, HTMLHint | Validation and formatting |
+| **Docker** | Hadolint, **Trivy** | Dockerfile linting + security scanning |
+| **YAML** | yamllint v1.37.1 | Comprehensive linting (more than basic check-yaml) |
+| **TOML** | **Taplo v0.9.3** | Linting and formatting for pyproject.toml, Cargo.toml, etc. |
+| **Markdown** | markdownlint v0.45.0 | Linting and auto-fix with customizable rules |
+| **General** | Gitleaks, detect-secrets | Multi-layer secrets detection |
 
-### 🆕 Novedades de esta versión
+### 🆕 What's New in This Version
 
-- **Biome v2.3.5**: Type-aware linting para JS/TS sin compilador TypeScript
-- **Mypy v1.18.2**: 40% más rápido en type checking
-- **DCM para Flutter**: Detección de código no usado, métricas de complejidad
-- **Flutter analyze auto-detect**: Detecta automáticamente proyectos Flutter vs Dart puro
-- **Stack PostgreSQL completo**: Crítico para Odoo 19
-- **yamllint v1.37.1**: Linting YAML comprehensivo (más allá de check-yaml básico)
-- **Taplo v0.9.3**: Linting y formatting TOML (pyproject.toml, Cargo.toml, etc.)
-- **markdownlint v0.45.0**: Actualizado con configuración personalizada
-- **Trivy**: Security scanning de Docker y filesystems
-- **Rust enhanced**: Coverage con llvm-cov, detección de deps no usadas
+- **Biome v2.3.5**: Type-aware linting for JS/TS without TypeScript compiler
+- **Mypy v1.18.2**: 40% faster type checking
+- **DCM for Flutter**: Unused code detection, complexity metrics
+- **Flutter analyze auto-detect**: Automatically detects Flutter vs pure Dart projects
+- **Complete PostgreSQL stack**: Critical for Odoo 19
+- **yamllint v1.37.1**: Comprehensive YAML linting (beyond basic check-yaml)
+- **Taplo v0.9.3**: TOML linting and formatting (pyproject.toml, Cargo.toml, etc.)
+- **markdownlint v0.45.0**: Updated with custom configuration
+- **Trivy**: Security scanning for Docker and filesystems
+- **Rust enhanced**: Coverage with llvm-cov, unused deps detection
 
-## 🚀 Instalación
+## 🚀 Installation
 
-### Requisitos previos
+### Prerequisites
 
 ```bash
 # Python 3.11+
@@ -66,61 +66,61 @@ python --version  # >= 3.11
 pip install pre-commit>=4.4.0
 
 # Git repository
-git init  # si es un proyecto nuevo
+git init  # if it's a new project
 ```
 
-### Instalación completa
+### Full Installation
 
 ```bash
-# 1. Clonar o copiar este repositorio
-git clone <este-repo>
+# 1. Clone or copy this repository
+git clone <this-repo>
 
-# 2. Instalar dependencias Python
+# 2. Install Python dependencies
 pip install -e .
 
-# 3. Instalar pre-commit hooks
+# 3. Install pre-commit hooks
 make setup
 
-# 4. (Opcional) Instalar herramientas adicionales según tu stack
+# 4. (Optional) Install additional tools per stack
 ```
 
-### Instalación por stack
+### Installation by Stack
 
-#### Stack Python
+#### Python Stack
 ```bash
 pip install ruff mypy bandit safety pip-audit
 ```
 
-#### Stack Rust
+#### Rust Stack
 ```bash
 cargo install cargo-audit cargo-deny cargo-outdated cargo-udeps
 cargo install cargo-llvm-cov
 ```
 
-#### Stack Flutter/Dart
+#### Flutter/Dart Stack
 ```bash
 dart pub global activate dcm
 ```
 
-#### Stack TypeScript/JavaScript
+#### TypeScript/JavaScript Stack
 ```bash
 npm install -g @biomejs/biome@2.3.5
 ```
 
-#### Stack PostgreSQL
+#### PostgreSQL Stack
 ```bash
 pip install sqlfluff squawk
 ```
 
-#### Stack Docker
+#### Docker Stack
 ```bash
 # Trivy
 brew install trivy
-# o
+# or
 curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 ```
 
-#### Stack General (Secrets)
+#### General Stack (Secrets)
 ```bash
 # Gitleaks
 brew install gitleaks
@@ -130,80 +130,80 @@ pip install detect-secrets
 detect-secrets scan --baseline .secrets.baseline
 ```
 
-## 💻 Uso
+## 💻 Usage
 
-### Ejecución manual
+### Manual Execution
 
 ```bash
-# Ejecutar todos los hooks en todos los archivos
+# Run all hooks on all files
 pre-commit run --all-files
 
-# Ejecutar un hook específico
+# Run a specific hook
 pre-commit run ruff --all-files
 pre-commit run biome-check --all-files
 pre-commit run sqlfluff-lint --all-files
 
-# Ejecutar solo en archivos staged
+# Run only on staged files
 pre-commit run
 ```
 
-### Ejecución automática
+### Automatic Execution
 
-Los hooks se ejecutan automáticamente en:
-- **pre-commit**: Antes de cada commit
-- **commit-msg**: Validación de mensaje de commit (Conventional Commits)
-- **pre-push**: Tests, coverage, security scans completos
+Hooks run automatically on:
+- **pre-commit**: Before each commit
+- **commit-msg**: Commit message validation (Conventional Commits)
+- **pre-push**: Complete tests, coverage, security scans
 
-### Comandos Make disponibles
+### Available Make Commands
 
 ```bash
-# Setup inicial
-make setup          # Instala hooks y dependencias
+# Initial setup
+make setup          # Install hooks and dependencies
 
-# Linting y formato
-make lint           # Ejecuta todos los pre-commit hooks
-make format         # Formatea código (Python)
+# Linting and formatting
+make lint           # Run all pre-commit hooks
+make format         # Format code (Python)
 
 # Python
-make test           # Ejecuta tests
-make coverage       # Genera reporte de coverage
+make test           # Run tests
+make coverage       # Generate coverage report
 
 # Odoo
-make odoo-lint      # Linting específico de Odoo
+make odoo-lint      # Odoo-specific linting
 make odoo-check-structure
 
 # PostgreSQL/SQL
-make sql-lint       # Lint archivos SQL
+make sql-lint       # Lint SQL files
 make sql-fix        # Auto-fix SQL
-make sql-check-injection  # Detecta SQL injection
+make sql-check-injection  # Detect SQL injection
 
 # Rust
-make rust-coverage  # Genera reporte HTML de coverage
-make rust-outdated  # Deps obsoletas
-make rust-udeps     # Deps no usadas
+make rust-coverage  # Generate HTML coverage report
+make rust-outdated  # Outdated deps
+make rust-udeps     # Unused deps
 
 # Flutter/Dart
-make flutter-analyze      # Análisis completo (dart + dcm)
-make flutter-metrics      # Métricas de código
-make flutter-coverage     # Coverage HTML
+make flutter-analyze      # Complete analysis (dart + dcm)
+make flutter-metrics      # Code metrics
+make flutter-coverage     # HTML coverage
 
 # Docker
-make docker-scan    # Security scan con Trivy
+make docker-scan    # Security scan with Trivy
 
-# Seguridad
-make security       # Todos los checks de seguridad
-make secrets-scan   # Escaneo de secretos
-make audit          # Audit de dependencias
+# Security
+make security       # All security checks
+make secrets-scan   # Secrets scanning
+make audit          # Dependencies audit
 
-# Limpieza
-make clean          # Limpia archivos temporales
+# Cleanup
+make clean          # Clean temporary files
 ```
 
-## ⚙️ Configuración por Stack
+## ⚙️ Configuration by Stack
 
 ### Python (pyproject.toml)
 
-El proyecto usa Ruff para linting y formatting, con configuración específica para Odoo:
+Project uses Ruff for linting and formatting, with Odoo-specific configuration:
 
 ```toml
 [tool.ruff]
@@ -217,7 +217,7 @@ ignore = ["E501", "N999", ...]
 
 ### TypeScript/JavaScript (biome.json)
 
-Biome v2 con type-aware linting:
+Biome v2 with type-aware linting:
 
 ```json
 {
@@ -230,7 +230,7 @@ Biome v2 con type-aware linting:
 
 ### Flutter/Dart (dcm.yaml)
 
-DCM con métricas estrictas:
+DCM with strict metrics:
 
 ```yaml
 metrics:
@@ -241,7 +241,7 @@ metrics:
 
 ### PostgreSQL (.sqlfluff)
 
-SQLFluff configurado para PostgreSQL:
+SQLFluff configured for PostgreSQL:
 
 ```ini
 [sqlfluff]
@@ -251,7 +251,7 @@ max_line_length = 120
 
 ### YAML (.yamllint)
 
-Yamllint con configuración relajada:
+Yamllint with relaxed configuration:
 
 ```yaml
 extends: relaxed
@@ -262,7 +262,7 @@ rules:
 
 ### TOML (.taplo.toml)
 
-Taplo para formateo y linting:
+Taplo for formatting and linting:
 
 ```toml
 [formatting]
@@ -273,7 +273,7 @@ trailing_newline = true
 
 ### Markdown (.markdownlint.json)
 
-Markdownlint personalizado:
+Custom Markdownlint:
 
 ```json
 {
@@ -286,7 +286,7 @@ Markdownlint personalizado:
 
 ### Rust (deny.toml)
 
-Cargo-deny para licencias y security:
+Cargo-deny for licenses and security:
 
 ```toml
 [licenses]
@@ -294,89 +294,89 @@ allow = ["MIT", "Apache-2.0", "BSD-3-Clause"]
 deny = ["GPL-2.0", "GPL-3.0"]
 ```
 
-## 📊 Métricas y Reportes
+## 📊 Metrics and Reports
 
 ### Python Coverage
 ```bash
 make coverage
-# Abre: htmlcov/index.html
+# Opens: htmlcov/index.html
 ```
 
 ### Rust Coverage
 ```bash
 make rust-coverage
-# Abre: target/llvm-cov/html/index.html
+# Opens: target/llvm-cov/html/index.html
 ```
 
 ### Flutter Coverage
 ```bash
 make flutter-coverage
-# Abre: coverage/html/index.html
+# Opens: coverage/html/index.html
 ```
 
-### Flutter Métricas
+### Flutter Metrics
 ```bash
 make flutter-metrics
-# Muestra archivos/código no usado
+# Shows unused files/code
 ```
 
-## 🔒 Seguridad
+## 🔒 Security
 
-El stack implementa múltiples capas de seguridad:
+The stack implements multiple security layers:
 
-1. **Detección de secretos** (2 capas):
-   - Gitleaks: Rápido y comprehensivo
-   - detect-secrets: Patrones complementarios
+1. **Secrets Detection** (2 layers):
+   - Gitleaks: Fast and comprehensive
+   - detect-secrets: Complementary patterns
 
-2. **Vulnerabilidades**:
+2. **Vulnerabilities**:
    - Python: Bandit + Safety
    - Rust: cargo-audit + cargo-deny
    - npm: npm audit
    - Docker: Trivy
 
 3. **SQL Injection**:
-   - Análisis estático de código Python
-   - Detección de patrones peligrosos (f-strings, concatenación)
+   - Static Python code analysis
+   - Dangerous patterns detection (f-strings, concatenation)
 
 4. **Docker Security**:
    - Trivy config scan
    - Trivy filesystem scan
 
-## 🎯 Casos de Uso
+## 🎯 Use Cases
 
-### Proyecto Python + PostgreSQL + Odoo
+### Python + PostgreSQL + Odoo Project
 ```yaml
-# Solo activar estos stacks en .pre-commit-config.yaml
-# Comentar o eliminar los demás
+# Only activate these stacks in .pre-commit-config.yaml
+# Comment out or remove the others
 ```
 
-### Proyecto Flutter
+### Flutter Project
 ```bash
-# Instalar DCM
+# Install DCM
 dart pub global activate dcm
 
-# Ejecutar
+# Run
 make flutter-analyze
 ```
 
-### Proyecto Rust + PostgreSQL
+### Rust + PostgreSQL Project
 ```bash
-# Instalar herramientas Rust
+# Install Rust tools
 cargo install cargo-llvm-cov cargo-audit
 
-# Ejecutar
+# Run
 make lint
 make rust-coverage
 ```
 
-## 🛠️ Requisitos de Herramientas
+## 🛠️ Tool Requirements
 
-### Obligatorias (core)
+### Mandatory (core)
 - Python >= 3.11
 - pre-commit >= 4.4.0
 - Git
 
-### Por stack (instalar según necesidad)
+### Per stack (install as needed)
 
 **Python:**
 - ruff >= 0.14.5
@@ -385,7 +385,7 @@ make rust-coverage
 
 **Rust:**
 - rustc + cargo (stable)
-- cargo nightly (para udeps)
+- cargo nightly (for udeps)
 - cargo-llvm-cov
 - cargo-audit, cargo-deny, cargo-outdated
 
@@ -411,54 +411,54 @@ make rust-coverage
 
 ## 🗺️ Roadmap
 
-### Fase 1: Completado ✅
-- [x] Actualización Biome v2
-- [x] Actualización Mypy v1.18.2
-- [x] Stack PostgreSQL/plSQL completo
-- [x] DCM para Flutter/Dart
+### Phase 1: Completed ✅
+- [x] Biome v2 update
+- [x] Mypy v1.18.2 update
+- [x] Complete PostgreSQL/plSQL stack
+- [x] DCM for Flutter/Dart
 - [x] Rust enhanced (coverage, deps)
 - [x] Multi-layer secrets detection
 - [x] Trivy security scanning
 
-### Fase 2: En progreso 🚧
-- [ ] CLI tool para inicialización de proyectos
-- [ ] Templates por stack
-- [ ] Configuraciones predefinidas
-- [ ] Tests automatizados del stack
+### Phase 2: In Progress 🚧
+- [ ] CLI tool for project initialization
+- [ ] Templates per stack
+- [ ] Predefined configurations
+- [ ] Automated stack tests
 
-### Fase 3: Planeado 📝
+### Phase 3: Planned 📝
 - [ ] GitHub Actions workflows
 - [ ] GitLab CI templates
-- [ ] Docker image con todas las herramientas
+- [ ] Docker image with all tools
 - [ ] VS Code extension
-- [ ] Dashboard de métricas
+- [ ] Metrics dashboard
 
-## 📚 Documentación Adicional
+## 📚 Additional Documentation
 
-- [Pre-commit oficial](https://pre-commit.com/)
+- [Official Pre-commit](https://pre-commit.com/)
 - [Ruff documentation](https://docs.astral.sh/ruff/)
 - [Biome documentation](https://biomejs.dev/)
 - [DCM documentation](https://dcm.dev/)
 - [SQLFluff documentation](https://docs.sqlfluff.com/)
 - [Trivy documentation](https://aquasecurity.github.io/trivy/)
 
-## 🤝 Contribuciones
+## 🤝 Contributing
 
-Las contribuciones son bienvenidas. Por favor:
+Contributions are welcome. Please:
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'feat: add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+1. Fork the project
+2. Create a branch for your feature (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'feat: add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📄 Licencia
+## 📄 License
 
-MIT License - ver el archivo LICENSE para más detalles
+MIT License - see the LICENSE file for more details
 
-## 🙏 Agradecimientos
+## 🙏 Acknowledgments
 
-Este proyecto usa las siguientes herramientas open source:
+This project uses the following open source tools:
 - [pre-commit](https://github.com/pre-commit/pre-commit)
 - [Ruff](https://github.com/astral-sh/ruff)
 - [Biome](https://github.com/biomejs/biome)
@@ -466,10 +466,10 @@ Este proyecto usa las siguientes herramientas open source:
 - [SQLFluff](https://github.com/sqlfluff/sqlfluff)
 - [Gitleaks](https://github.com/gitleaks/gitleaks)
 - [Trivy](https://github.com/aquasecurity/trivy)
-- Y muchas más...
+- And many more...
 
 ---
 
-**Versión**: 0.1.0
-**Última actualización**: Noviembre 2025
-**Stack optimizado para**: Odoo 19.0, Python 3.11+, Rust stable, Flutter 3.x, Node.js 18+
+**Version**: 0.1.0
+**Last Updated**: November 2025
+**Stack Optimized For**: Odoo 19.0, Python 3.11+, Rust stable, Flutter 3.x, Node.js 18+

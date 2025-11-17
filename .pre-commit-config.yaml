@@ -1,4 +1,4 @@
-# .pre-commit-config.yaml - ACTUALIZADO para Odoo 19.0 (Noviembre 2025)
+# .pre-commit-config.yaml - UPDATED for Odoo 19.0 (November 2025)
 # Minimum pre-commit version
 minimum_pre_commit_version: "4.4.0"
 
@@ -170,7 +170,7 @@ repos:
 
   # OCA pylint-odoo - Odoo-specific Python linting
   - repo: https://github.com/OCA/pylint-odoo
-    rev: v9.3.22  # Soporta Odoo 19.0
+    rev: v9.3.22  # Supports Odoo 19.0
     hooks:
       - id: pylint_odoo
         name: Pylint for Odoo 19 modules

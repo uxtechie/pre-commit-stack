@@ -1,32 +1,32 @@
-# 📦 Guía de Instalación Completa
+# 📦 Complete Installation Guide
 
-Esta guía te ayudará a instalar todas las herramientas necesarias para el pre-commit stack.
+This guide will help you install all the necessary tools for the pre-commit stack.
 
-## 🎯 Instalación Rápida (Recomendada)
+## 🎯 Quick Installation (Recommended)
 
 ```bash
-# 1. Clonar el repositorio
-git clone <url-del-repo>
+# 1. Clone the repository
+git clone <repo-url>
 cd pre-commit-stack
 
-# 2. Ejecutar setup completo
+# 2. Run complete setup
 make setup
 
-# 3. Listo! Los hooks están instalados
+# 3. Done! Hooks are installed
 ```
 
-## 📋 Instalación Detallada por Stack
+## 📋 Detailed Installation by Stack
 
 ### 🐍 Python Stack
 
 ```bash
-# Dependencias base (obligatorio)
+# Base dependencies (mandatory)
 pip install -e .
 
-# Herramientas de desarrollo
+# Development tools
 pip install pre-commit ruff mypy bandit safety pip-audit pytest pytest-cov yamllint
 
-# Verificar instalación
+# Verify installation
 ruff --version      # 0.14.5+
 mypy --version      # 1.18.2+
 bandit --version    # 1.7.10+
@@ -36,20 +36,20 @@ yamllint --version  # 1.37.1+
 ### 🦀 Rust Stack
 
 ```bash
-# Rustup (si no lo tienes)
+# Rustup (if you don't have it)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-# Nightly (para cargo-udeps)
+# Nightly (for cargo-udeps)
 rustup toolchain install nightly
 
-# Herramientas de calidad
+# Quality tools
 cargo install cargo-audit
 cargo install cargo-deny
 cargo install cargo-outdated
 cargo install cargo-llvm-cov
 cargo install cargo-udeps --locked
 
-# Verificar instalación
+# Verify installation
 cargo --version
 cargo +nightly --version
 cargo audit --version
@@ -59,16 +59,16 @@ cargo llvm-cov --version
 ### 📱 Flutter/Dart Stack
 
 ```bash
-# Flutter SDK (si no lo tienes)
+# Flutter SDK (if you don't have it)
 # https://docs.flutter.dev/get-started/install
 
 # DCM (Dart Code Metrics)
 dart pub global activate dcm
 
-# Añadir al PATH si es necesario
+# Add to PATH if necessary
 export PATH="$PATH":"$HOME/.pub-cache/bin"
 
-# Verificar instalación
+# Verify installation
 flutter --version
 dart --version
 dcm --version
@@ -77,16 +77,16 @@ dcm --version
 ### 📝 TypeScript/JavaScript Stack
 
 ```bash
-# Node.js (si no lo tienes)
-# Usa nvm: https://github.com/nvm-sh/nvm
+# Node.js (if you don't have it)
+# Use nvm: https://github.com/nvm-sh/nvm
 
 # Biome v2
 npm install -g @biomejs/biome@2.3.5
 
-# O con pnpm
+# Or with pnpm
 pnpm add -g @biomejs/biome@2.3.5
 
-# Verificar instalación
+# Verify installation
 node --version  # v18+
 biome --version # 2.3.5
 ```
@@ -101,12 +101,12 @@ pip install sqlfluff>=3.4.0
 # macOS
 brew install sbdchd/squawk/squawk
 
-# Linux (descarga binary)
+# Linux (download binary)
 wget https://github.com/sbdchd/squawk/releases/download/v1.1.0/squawk-linux-x86_64
 chmod +x squawk-linux-x86_64
 sudo mv squawk-linux-x86_64 /usr/local/bin/squawk
 
-# Verificar instalación
+# Verify installation
 sqlfluff version
 squawk --version
 ```
@@ -130,7 +130,7 @@ brew install trivy
 # Linux
 curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
-# Verificar instalación
+# Verify installation
 hadolint --version
 trivy --version
 ```
@@ -150,10 +150,10 @@ sudo mv gitleaks /usr/local/bin/
 # detect-secrets
 pip install detect-secrets>=1.5.0
 
-# Crear baseline inicial
+# Create initial baseline
 detect-secrets scan --baseline .secrets.baseline
 
-# Verificar instalación
+# Verify installation
 gitleaks version
 detect-secrets --version
 ```
@@ -167,66 +167,66 @@ pip install pylint-odoo>=9.3.22
 # OCA pre-commit hooks
 pip install oca-odoo-pre-commit-hooks>=0.1.6
 
-# Verificar instalación
+# Verify installation
 pylint --load-plugins=pylint_odoo --version
 ```
 
-## 🔧 Configuración Post-Instalación
+## 🔧 Post-Installation Configuration
 
-### 1. Inicializar Pre-commit
+### 1. Initialize Pre-commit
 
 ```bash
-# Instalar los hooks en el repositorio
+# Install hooks in the repository
 pre-commit install --install-hooks
 
-# Instalar hook de commit-msg
+# Install commit-msg hook
 pre-commit install --hook-type commit-msg
 
-# Instalar hook de pre-push
+# Install pre-push hook
 pre-commit install --hook-type pre-push
 
-# Verificar configuración
+# Verify configuration
 pre-commit validate-config
 ```
 
-### 2. Ejecutar Primera Vez
+### 2. First Run
 
 ```bash
-# Ejecutar en todos los archivos (puede tardar)
+# Run on all files (may take time)
 pre-commit run --all-files
 
-# Si hay errores, intenta auto-fix
+# If there are errors, try auto-fix
 make format
 make sql-fix
 
-# Ejecutar de nuevo
+# Run again
 pre-commit run --all-files
 ```
 
-### 3. Configurar Secrets Baseline
+### 3. Configure Secrets Baseline
 
 ```bash
-# Crear baseline de secretos existentes (si los hay)
+# Create baseline of existing secrets (if any)
 detect-secrets scan --baseline .secrets.baseline
 
-# Auditar y marcar falsos positivos
+# Audit and mark false positives
 detect-secrets audit .secrets.baseline
 ```
 
-## 📦 Instalación por Sistema Operativo
+## 📦 Installation by Operating System
 
 ### macOS
 
 ```bash
-# Homebrew (si no lo tienes)
+# Homebrew (if you don't have it)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Instalar todo con Homebrew
+# Install everything with Homebrew
 brew install python@3.11 node rust git
 brew install gitleaks trivy hadolint
 brew install shellcheck shfmt
 
-# Instalar Flutter
+# Install Flutter
 brew install --cask flutter
 
 # Python packages
@@ -242,10 +242,10 @@ cargo install cargo-audit cargo-deny cargo-outdated cargo-llvm-cov
 ### Ubuntu/Debian
 
 ```bash
-# Actualizar sistema
+# Update system
 sudo apt update && sudo apt upgrade -y
 
-# Dependencias base
+# Base dependencies
 sudo apt install -y python3.11 python3-pip nodejs npm git build-essential
 
 # Rust
@@ -269,13 +269,13 @@ npm install -g @biomejs/biome@2.3.5
 cargo install cargo-audit cargo-deny cargo-outdated cargo-llvm-cov
 ```
 
-### Windows (WSL2 recomendado)
+### Windows (WSL2 recommended)
 
 ```bash
-# Instalar WSL2 primero
-# Luego seguir instrucciones de Ubuntu arriba
+# Install WSL2 first
+# Then follow Ubuntu instructions above
 
-# O usar Chocolatey
+# Or use Chocolatey
 choco install python nodejs git rust gitleaks
 
 # Python packages
@@ -288,20 +288,20 @@ npm install -g @biomejs/biome@2.3.5
 cargo install cargo-audit cargo-deny cargo-outdated cargo-llvm-cov
 ```
 
-## ✅ Verificación de Instalación
+## ✅ Installation Verification
 
-Ejecuta este script para verificar que todo está instalado:
+Run this script to verify everything is installed:
 
 ```bash
 #!/bin/bash
-echo "🔍 Verificando instalación de herramientas..."
+echo "🔍 Verifying tool installation..."
 
 check_tool() {
     if command -v $1 &> /dev/null; then
         echo "✅ $1: $(command -v $1)"
-        $1 --version 2>/dev/null || echo "   (instalado pero sin --version)"
+        $1 --version 2>/dev/null || echo "   (installed but no --version)"
     else
-        echo "❌ $1: NO ENCONTRADO"
+        echo "❌ $1: NOT FOUND"
     fi
 }
 
@@ -344,36 +344,36 @@ check_tool gitleaks
 check_tool detect-secrets
 
 echo ""
-echo "🎉 Verificación completa!"
+echo "🎉 Verification complete!"
 ```
 
-## 🆘 Solución de Problemas
+## 🆘 Troubleshooting
 
 ### Error: "command not found"
 
 ```bash
-# Añadir al PATH
+# Add to PATH
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
 export PATH="$PATH:$HOME/.pub-cache/bin"
 
-# Hacer permanente (añadir a ~/.bashrc o ~/.zshrc)
+# Make permanent (add to ~/.bashrc or ~/.zshrc)
 echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
 ```
 
 ### Error: "pre-commit command not found"
 
 ```bash
-# Reinstalar pre-commit
+# Reinstall pre-commit
 pip install --user pre-commit
-# O
+# Or
 pip3 install --user pre-commit
 ```
 
 ### Error: "cargo: command not found"
 
 ```bash
-# Instalar Rust
+# Install Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
 ```
@@ -381,29 +381,29 @@ source $HOME/.cargo/env
 ### Error: "dcm: command not found"
 
 ```bash
-# Activar DCM globalmente
+# Activate DCM globally
 dart pub global activate dcm
 
-# Añadir al PATH
+# Add to PATH
 export PATH="$PATH":"$HOME/.pub-cache/bin"
 ```
 
-### Error al ejecutar pre-commit hooks
+### Error running pre-commit hooks
 
 ```bash
-# Limpiar cache
+# Clean cache
 pre-commit clean
 
-# Reinstalar hooks
+# Reinstall hooks
 pre-commit install --install-hooks --overwrite
 
-# Ejecutar con verbose para ver errores
+# Run with verbose to see errors
 pre-commit run --all-files --verbose
 ```
 
-## 📚 Recursos Adicionales
+## 📚 Additional Resources
 
-- [Guía oficial de pre-commit](https://pre-commit.com/#install)
+- [Official pre-commit guide](https://pre-commit.com/#install)
 - [Ruff installation](https://docs.astral.sh/ruff/installation/)
 - [Rust installation](https://www.rust-lang.org/tools/install)
 - [Flutter installation](https://docs.flutter.dev/get-started/install)
@@ -411,4 +411,4 @@ pre-commit run --all-files --verbose
 
 ---
 
-**¿Necesitas ayuda?** Abre un issue en el repositorio del proyecto.
+**Need help?** Open an issue in the project repository.
