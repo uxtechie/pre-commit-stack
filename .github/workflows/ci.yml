@@ -1,0 +1,88 @@
+name: Odoo CI
+
+on:
+  push:
+    branches: [main, develop, '19.0']
+  pull_request:
+    branches: [main, develop, '19.0']
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'  # Odoo 19 requires Python 3.11+
+      - name: Install dependencies
+        run: |
+          pip install pre-commit
+          pip install pylint-odoo
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.1
+
+  odoo-tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16  # Odoo 19 supports PostgreSQL 16
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: odoo
+          POSTGRES_USER: odoo
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Odoo
+        run: |
+          git clone --depth 1 --branch 19.0 https://github.com/odoo/odoo.git
+          pip install -r odoo/requirements.txt
+          pip install -e odoo/
+
+      - name: Install module dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Odoo tests
+        run: |
+          odoo-bin -c odoo.conf \
+            --test-enable \
+            --stop-after-init \
+            --log-level=test \
+            --addons-path=addons,odoo/addons \
+            -d test_db \
+            -u all
+        env:
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: odoo
+          PGPASSWORD: odoo
+
+  pylint-odoo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          pip install pylint pylint-odoo
+      - name: Run pylint-odoo
+        run: |
+          pylint --load-plugins=pylint_odoo \
+            --valid-odoo-versions=19.0 \
+            -d all -e odoolint \
+            --rcfile=.pylintrc \
+            addons/*/

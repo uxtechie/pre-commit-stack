@@ -1,0 +1,49 @@
+[MASTER]
+load-plugins=pylint_odoo
+score=no
+persistent=no
+
+[ODOOLINT]
+# Odoo 19.0 validation
+valid_odoo_versions=19.0
+
+manifest_required_keys=name,version,depends,license,author
+manifest_required_author=OCA
+
+# Updated licenses for Odoo 19
+license_allowed=AGPL-3,LGPL-3,GPL-3,Apache-2.0,MIT,Other proprietary
+
+# Deprecated keys in Odoo 19
+manifest_deprecated_keys=active,description
+
+[MESSAGES CONTROL]
+disable=all
+enable=odoolint,
+       manifest-required-key,
+       manifest-syntax-error,
+       license-allowed,
+       attribute-deprecated,
+       method-deprecated,
+       sql-injection,
+       translation-required,
+       manifest-deprecated-key,
+       development-status-allowed,
+       class-camelcase,
+       resource-not-exist,
+       xml-syntax-error,
+       renamed-field-parameter,
+       deprecated-data-xml-node,
+       openerp-exception-warning,
+       consider-merging-classes-inherited,
+       copy-wo-api-one,
+       method-required-super,
+       translation-too-few-args,
+       translation-too-many-args,
+       print-used,
+       prefer-env-translation
+
+[REPORTS]
+output-format=colorized
+
+[FORMAT]
+max-line-length=79

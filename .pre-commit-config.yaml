@@ -1,0 +1,463 @@
+# .pre-commit-config.yaml - ACTUALIZADO para Odoo 19.0 (Noviembre 2025)
+# Minimum pre-commit version
+minimum_pre_commit_version: "4.4.0"
+
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+  - pre-push
+
+repos:
+  # ============================================
+  # 01. GENERAL - File Quality & Validation
+  # ============================================
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      # File formatting
+      - id: trailing-whitespace
+        args: ['--markdown-linebreak-ext=md']
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+      # Syntax validation
+      - id: check-yaml
+        args: ['--unsafe']
+      - id: check-json
+      - id: check-toml
+      - id: check-xml
+
+      # Git checks
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: forbid-submodules
+
+      # Security
+      - id: detect-private-key
+
+      # Python specific
+      - id: check-ast
+      - id: check-builtin-literals
+      - id: check-docstring-first
+      - id: debug-statements
+      - id: name-tests-test
+        args: ['--pytest-test-first']
+
+      # File size
+      - id: file-contents-sorter
+        files: ^(\.gitignore|requirements.*\.txt)$
+
+  # ============================================
+  # 02. SECURITY - Secrets & Vulnerabilities
+  # ============================================
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.29.0
+    hooks:
+      - id: gitleaks
+
+  # ============================================
+  # 03. COMMIT MESSAGE VALIDATION
+  # ============================================
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.6.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: ['--strict']
+
+  # ============================================
+  # 04. PYTHON - Modern Stack with Ruff
+  # ============================================
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.5
+    hooks:
+      # Linting
+      - id: ruff
+        args: ['--fix', '--exit-non-zero-on-fix']
+
+      # Formatting
+      - id: ruff-format
+
+  # Type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - types-requests
+          - types-PyYAML
+        args:
+          - --ignore-missing-imports
+
+  # Security - Bandit
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.10
+    hooks:
+      - id: bandit
+        args: ['-c', 'pyproject.toml']
+        additional_dependencies: ['bandit[toml]']
+
+  # Dependency vulnerabilities
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.3.3
+    hooks:
+      - id: python-safety-dependencies-check
+        files: requirements.*\.txt$
+
+  # Documentation
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 6.3.0
+    hooks:
+      - id: pydocstyle
+        args: ['--convention=google']
+        additional_dependencies: ['tomli']
+
+  # Dead code detection
+  - repo: https://github.com/asottile/dead
+    rev: v1.5.2
+    hooks:
+      - id: dead
+
+  # Test coverage enforcement
+  - repo: local
+    hooks:
+      - id: pytest-coverage
+        name: pytest minimum coverage
+        entry: pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+        args:
+          - --cov
+          - --cov-fail-under=80
+          - --cov-report=term-missing
+        stages: [pre-push]
+
+  # ============================================
+  # 05. ODOO 19 - Specific Checks
+  # ============================================
+
+  # OCA pylint-odoo - Odoo-specific Python linting
+  - repo: https://github.com/OCA/pylint-odoo
+    rev: v9.3.22  # Soporta Odoo 19.0
+    hooks:
+      - id: pylint_odoo
+        name: Pylint for Odoo 19 modules
+        args:
+          - --load-plugins=pylint_odoo
+          - --valid-odoo-versions=19.0
+          - -d
+          - all
+          - -e
+          - odoolint
+        additional_dependencies:
+          - pylint>=3.0
+        exclude: (__init__|__manifest__|test_.*).py$
+        types: [python]
+
+  # OCA odoo-pre-commit-hooks - XML, CSV, PO validation
+  - repo: https://github.com/OCA/odoo-pre-commit-hooks
+    rev: v0.1.6
+    hooks:
+      # Check Odoo modules (XML, CSV, Manifest)
+      - id: oca-checks-odoo-module
+        name: OCA Odoo 19 module checks
+        args:
+          # Enable specific checks for Odoo 19
+          - --enable=manifest-required-keys
+          - --enable=manifest-syntax-error
+          - --enable=xml-syntax-error
+          - --enable=xml-deprecated-data-node
+          - --enable=xml-deprecated-qweb-directive
+          - --enable=xml-deprecated-chatter-tag
+          - --enable=csv-syntax-error
+          - --enable=csv-duplicate-record-id
+          - --enable=file-not-used
+        files: \.(xml|csv)$|__manifest__\.py$
+
+      # Check PO translation files
+      - id: oca-checks-po
+        name: OCA PO file checks
+        args: ['--fix']
+        files: \.(po|pot)$
+
+  # Additional Odoo 19-specific hooks
+  - repo: local
+    hooks:
+      # Validate Odoo 19 module structure
+      - id: odoo-module-structure
+        name: Validate Odoo 19 module structure
+        entry: python scripts/validate_odoo19_structure.py
+        language: system
+        files: __manifest__\.py$
+        pass_filenames: true
+
+      # Check OWL components (Odoo 19 uses OWL framework)
+      - id: odoo-validate-owl
+        name: Validate OWL JavaScript components
+        entry: python scripts/validate_owl_components.py
+        language: system
+        files: static/src/.*\.(js|xml)$
+        pass_filenames: true
+
+      # Check AI Server Actions configuration
+      - id: odoo-check-ai-actions
+        name: Validate AI Server Actions
+        entry: python scripts/check_ai_server_actions.py
+        language: system
+        files: data/.*server_actions.*\.xml$
+        pass_filenames: true
+
+      # Check ESG/Sustainability data
+      - id: odoo-check-esg
+        name: Validate ESG/Sustainability data
+        entry: python scripts/check_esg_data.py
+        language: system
+        files: (esg|sustainability)/.*\.xml$
+        pass_filenames: true
+
+      # Validate HR/Payroll unification (Odoo 19 feature)
+      - id: odoo-check-hr-payroll
+        name: Check HR/Payroll structure
+        entry: python scripts/check_hr_payroll_structure.py
+        language: system
+        files: (models/hr_.*|data/.*payroll.*)\.py$
+        pass_filenames: true
+
+      # Check for missing translations
+      - id: odoo-check-translations
+        name: Check missing translations
+        entry: python scripts/check_translations.py
+        language: system
+        files: \.po$
+        pass_filenames: false
+
+      # Validate views XML
+      - id: odoo-validate-views
+        name: Validate Odoo XML views
+        entry: python scripts/validate_views.py
+        language: system
+        files: views/.*\.xml$
+        pass_filenames: true
+
+      # Check dependencies in manifest
+      - id: odoo-check-dependencies
+        name: Check Odoo module dependencies
+        entry: python scripts/check_dependencies.py
+        language: system
+        files: __manifest__\.py$
+        pass_filenames: true
+
+      # Validate Google Merchant Center integration
+      - id: odoo-check-merchant-integration
+        name: Validate e-commerce integrations
+        entry: python scripts/check_ecommerce_integrations.py
+        language: system
+        files: (google_merchant|tiktok|social_).*\.py$
+        pass_filenames: true
+
+  # ============================================
+  # 06. RUST
+  # ============================================
+
+  - repo: local
+    hooks:
+      - id: cargo-fmt
+        name: cargo fmt
+        entry: cargo fmt
+        language: system
+        types: [rust]
+        pass_filenames: false
+
+      - id: cargo-clippy
+        name: cargo clippy
+        entry: cargo clippy
+        language: system
+        types: [rust]
+        pass_filenames: false
+        args: ['--all-targets', '--all-features', '--', '-D', 'warnings']
+
+      - id: cargo-test
+        name: cargo test
+        entry: cargo test
+        language: system
+        types: [rust]
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: cargo-audit
+        name: cargo audit
+        entry: cargo audit
+        language: system
+        pass_filenames: false
+        files: Cargo\.(toml|lock)$
+
+      - id: cargo-deny
+        name: cargo deny
+        entry: cargo deny check
+        language: system
+        pass_filenames: false
+        files: Cargo\.(toml|lock)$
+
+  # ============================================
+  # 07. JAVASCRIPT/TYPESCRIPT - Biome + OWL
+  # ============================================
+
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v0.9.3
+    hooks:
+      - id: biome-check
+        additional_dependencies: ['@biomejs/biome@1.9.3']
+
+  # TypeScript type checking
+  - repo: local
+    hooks:
+      - id: tsc
+        name: TypeScript type check
+        entry: npx tsc --noEmit
+        language: system
+        types: [ts, tsx]
+        pass_filenames: false
+
+      - id: npm-audit
+        name: npm audit
+        entry: npm audit --audit-level=moderate
+        language: system
+        pass_filenames: false
+        files: package(-lock)?\.json$
+
+  # ============================================
+  # 07. FLUTTER/DART
+  # ============================================
+
+  - repo: local
+    hooks:
+      - id: dart-format
+        name: dart format
+        entry: dart format
+        language: system
+        types: [dart]
+        args: ['--set-exit-if-changed']
+
+      - id: dart-analyze
+        name: dart analyze
+        entry: dart analyze
+        language: system
+        types: [dart]
+        pass_filenames: false
+        args: ['--fatal-infos', '--fatal-warnings']
+
+      - id: flutter-test
+        name: flutter test
+        entry: flutter test
+        language: system
+        types: [dart]
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: dart-pub-outdated
+        name: dart pub outdated
+        entry: dart pub outdated
+        language: system
+        pass_filenames: false
+        files: pubspec\.(yaml|lock)$
+
+  # ============================================
+  # 09. SHELL SCRIPTS
+  # ============================================
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        args: ['-x', '-e', 'SC1091']
+
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.9.0-1
+    hooks:
+      - id: shfmt
+        args: ['-i', '2', '-ci', '-w', '-s']
+
+  # ============================================
+  # 10. HTML/CSS
+  # ============================================
+
+  - repo: https://github.com/thibaudcolas/pre-commit-stylelint
+    rev: v16.10.0
+    hooks:
+      - id: stylelint
+        files: \.(css|scss|sass|less)$
+        additional_dependencies:
+          - stylelint@16.10.0
+          - stylelint-config-standard@36.0.1
+        args: ['--fix']
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-markup
+    rev: v1.0.1
+    hooks:
+      - id: validate-html
+
+  # ============================================
+  # 11. DOCKER
+  # ============================================
+
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.1-beta
+    hooks:
+      - id: hadolint-docker
+        args: ['--ignore', 'DL3008', '--ignore', 'DL3018']
+
+  # ============================================
+  # 12. MARKDOWN
+  # ============================================
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.43.0
+    hooks:
+      - id: markdownlint
+        args: ['--fix']
+
+  # ============================================
+  # 13. SPELL CHECKING
+  # ============================================
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        args:
+          - --ignore-words=.codespell-ignore
+          - --skip="*.lock,*.min.js,*.svg,package-lock.json"
+
+  # ============================================
+  # 13. DOCUMENTATION
+  # ============================================
+
+  - repo: local
+    hooks:
+      - id: update-changelog
+        name: Update CHANGELOG
+        entry: python scripts/update_changelog.py
+        language: system
+        pass_filenames: false
+        stages: [commit-msg]
+
+  # ============================================
+  # 14. DUPLICATE CODE DETECTION
+  # ============================================
+
+  - repo: local
+    hooks:
+      - id: jscpd
+        name: jscpd duplicate code
+        entry: npx jscpd
+        language: system
+        pass_filenames: false
+        args: ['--threshold', '5']
